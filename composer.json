@@ -27,7 +27,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/phpcoffee/coffeescript.git"
+      "url": "https://github.com/phpcoffee/coffeescript"
     }
   ],
   "require": {
