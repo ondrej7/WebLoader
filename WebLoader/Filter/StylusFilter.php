@@ -28,14 +28,16 @@ class StylusFilter
 		$this->bin = $bin;
 	}
 
-	/**
-	 * Invoke filter
-	 *
-	 * @param string
-	 * @param \WebLoader\Compiler
-	 * @param string
-	 * @return string
-	 */
+    /**
+     * Invoke filter
+     *
+     * @param $code
+     * @param \WebLoader\Compiler $loader
+     * @param null $file
+     * @return string
+     * @throws \RuntimeExeption
+     * @throws \WebLoader\WebLoaderException
+     */
 	public function __invoke($code, \WebLoader\Compiler $loader, $file = NULL)
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'styl') {

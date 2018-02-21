@@ -21,13 +21,13 @@ class Process
 	 */
 	public static function run($cmd, $stdin = NULL, $cwd = NULL, array $env = NULL)
 	{
-		$descriptorspec = array(
-			0 => array('pipe', 'r'), // stdin
-			1 => array('pipe', 'w'), // stdout
-			2 => array('pipe', 'w'), // stderr
-		);
+		$descriptorspec = [
+			0 => ['pipe', 'r'], // stdin
+			1 => ['pipe', 'w'], // stdout
+			2 => ['pipe', 'w'], // stderr
+		];
 
-		$pipes = array();
+		$pipes = [];
 		$proc = proc_open($cmd, $descriptorspec, $pipes, $cwd, $env);
 
 		if (!empty($stdin)) {

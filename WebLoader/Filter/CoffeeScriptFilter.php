@@ -25,14 +25,15 @@ class CoffeeScriptFilter
 		$this->bin = $bin;
 	}
 
-	/**
-	 * Invoke filter
-	 *
-	 * @param string
-	 * @param \WebLoader\Compiler
-	 * @param string
-	 * @return string
-	 */
+    /**
+     * Invoke filter
+     *
+     * @param string
+     * @param \WebLoader\Compiler
+     * @param string
+     * @return string
+     * @throws \RuntimeExeption
+     */
 	public function __invoke($code, \WebLoader\Compiler $loader, $file = NULL)
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'coffee') {
@@ -42,11 +43,12 @@ class CoffeeScriptFilter
 		return $code;
 	}
 
-	/**
-	 * @param string
-	 * @param bool|NULL
-	 * @return string
-	 */
+    /**
+     * @param string
+     * @param bool|NULL
+     * @return string
+     * @throws \RuntimeExeption
+     */
 	public function compileCoffee($source, $bare = NULL)
 	{
 		if (is_null($bare)) {

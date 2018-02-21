@@ -21,21 +21,22 @@ class TypeScriptFilter
 	 * @param string $bin
 	 * @param array $env
 	 */
-	public function __construct($bin = 'tsc', array $env = array())
+	public function __construct($bin = 'tsc', array $env = [])
 	{
 		$this->bin = $bin;
 		$this->env = $env + $_ENV;
 		unset($this->env['argv'], $this->env['argc']);
 	}
 
-	/**
-	 * Invoke filter
-	 *
-	 * @param  string $code
-	 * @param  \WebLoader\Compiler $compiler
-	 * @param  string $file
-	 * @return string
-	 */
+    /**
+     * Invoke filter
+     *
+     * @param  string $code
+     * @param  \WebLoader\Compiler $compiler
+     * @param  string $file
+     * @return string
+     * @throws \RuntimeExeption
+     */
 	public function __invoke($code, \WebLoader\Compiler $compiler, $file = NULL)
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'ts') {

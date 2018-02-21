@@ -83,7 +83,7 @@ class CssUrlsFilter
 	{
 		$path = strtr($path, DIRECTORY_SEPARATOR, '/');
 
-		$pathArr = array();
+		$pathArr = [];
 		foreach (explode('/', $path) as $i => $name) {
 			if ($name === '.' || ($name === '' && $i > 0)) continue;
 
