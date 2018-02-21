@@ -18,16 +18,16 @@ class Panel implements IBarPanel
 {
 
 	/** @var array */
-	public static $types = array(
+	public static $types = [
 		'css' => 'CSS files',
 		'js' => 'JavaScript files',
 		'less' => 'Less files',
 		'scss' => 'Sass files',
 		'coffee' => 'CoffeeScript files'
-	);
+	];
 
 	/** @var Compiler[] */
-	private $compilers = array();
+	private $compilers = [];
 
 	/** @var array */
 	private $size;
@@ -73,20 +73,20 @@ class Panel implements IBarPanel
 			return $this->size;
 		}
 
-		$size = array(
+		$size = [
 			'original' => 0,
 			'combined' => 0
-		);
-		$this->files = $this->sizes = array();
+		];
+		$this->files = $this->sizes = [];
 
 		foreach ($this->compilers as $name => $compiler) {
 			$group = lcfirst(substr($name, $name[0] === 'c' ? 3 : 2));
 
 			if (!isset($this->files[$group])) {
-				$this->files[$group] = array();
+				$this->files[$group] = [];
 			}
 			if (!isset($this->sizes[$group])) {
-				$this->sizes[$group] = array('.' => array('original' => 0, 'combined' => 0));
+				$this->sizes[$group] = ['.' => ['original' => 0, 'combined' => 0]];
 			}
 
 			$compilerCombinedSize = 0;
@@ -100,17 +100,17 @@ class Panel implements IBarPanel
 					$file = str_replace('\\', DIRECTORY_SEPARATOR, realpath($file));
 
 					if (!isset($this->files[$group][$extension])) {
-						$this->files[$group][$extension] = array();
+						$this->files[$group][$extension] = [];
 					}
 					if (!isset($this->sizes[$group][$extension])) {
-						$this->sizes[$group][$extension] = array('original' => 0);
+						$this->sizes[$group][$extension] = ['original' => 0];
 					}
 
-					$this->files[$group][$extension][] = array(
+					$this->files[$group][$extension][] = [
 							'name' => substr($file, strlen($this->root) + 1),
 							'full' => $file,
 							'size' => $fileSize = filesize($file)
-					);
+					];
 
 					$size['original'] += $fileSize;
 					$this->sizes[$group][$extension]['original'] += $fileSize;
@@ -121,7 +121,7 @@ class Panel implements IBarPanel
 			$this->sizes[$group]['.']['combined'] += $compilerCombinedSize;
 		}
 
-		return $this->size = $size + array('ratio' => $size['original'] !== 0 ? ($size['combined'] / $size['original']) * 100 : 0);
+		return $this->size = $size + ['ratio' => $size['original'] !== 0 ? ($size['combined'] / $size['original']) * 100 : 0];
 	}
 
 	/**
@@ -136,11 +136,11 @@ class Panel implements IBarPanel
 			return isset(Panel::$types[$extension]) ? Panel::$types[$extension] : $extension;
 		});
 
-		return $latte->renderToString(__DIR__ . '/panel.latte', array(
+		return $latte->renderToString(__DIR__ . '/panel.latte', [
 			'files' => $this->files,
 			'sizes' => $this->sizes,
 			'size' => $this->size
-		));
+		]);
 	}
 
 	/**

@@ -17,10 +17,10 @@ class Compiler
 	private $joinFiles = TRUE;
 
 	/** @var array */
-	private $filters = array();
+	private $filters = [];
 
 	/** @var array */
-	private $fileFilters = array();
+	private $fileFilters = [];
 
 	/** @var IFileCollection */
 	private $collection;
@@ -34,30 +34,42 @@ class Compiler
 	/** @var bool */
 	private $debugging = FALSE;
 
-	public function __construct(IFileCollection $files, IOutputNamingConvention $convention, $outputDir)
+    /**
+     * Compiler constructor.
+     * @param IFileCollection $files
+     * @param IOutputNamingConvention $convention
+     * @param $outputDir
+     * @throws FileNotFoundException
+     * @throws InvalidArgumentException
+     */
+    public function __construct(IFileCollection $files, IOutputNamingConvention $convention, $outputDir)
 	{
 		$this->collection = $files;
 		$this->namingConvention = $convention;
 		$this->setOutputDir($outputDir);
 	}
 
-	/**
-	 * Create compiler with predefined css output naming convention
-	 * @param IFileCollection $files
-	 * @param string $outputDir
-	 * @return Compiler
-	 */
+    /**
+     * Create compiler with predefined css output naming convention
+     * @param IFileCollection $files
+     * @param string $outputDir
+     * @return Compiler
+     * @throws FileNotFoundException
+     * @throws InvalidArgumentException
+     */
 	public static function createCssCompiler(IFileCollection $files, $outputDir)
 	{
 		return new static($files, DefaultOutputNamingConvention::createCssConvention(), $outputDir);
 	}
 
-	/**
-	 * Create compiler with predefined javascript output naming convention
-	 * @param IFileCollection $files
-	 * @param string $outputDir
-	 * @return Compiler
-	 */
+    /**
+     * Create compiler with predefined javascript output naming convention
+     * @param IFileCollection $files
+     * @param string $outputDir
+     * @return Compiler
+     * @throws FileNotFoundException
+     * @throws InvalidArgumentException
+     */
 	public static function createJsCompiler(IFileCollection $files, $outputDir)
 	{
 		return new static($files, DefaultOutputNamingConvention::createJsConvention(), $outputDir);
@@ -80,10 +92,12 @@ class Compiler
 		return $this->outputDir;
 	}
 
-	/**
-	 * Set temp path
-	 * @param string $tempPath
-	 */
+    /**
+     * Set temp path
+     * @param string $tempPath
+     * @throws FileNotFoundException
+     * @throws InvalidArgumentException
+     */
 	public function setOutputDir($tempPath)
 	{
 		$tempPath = Path::normalize($tempPath);
@@ -181,22 +195,22 @@ class Compiler
 		$files = $this->collection->getFiles();
 
 		if (!count($files)) {
-			return array();
+			return [];
 		}
 
 		if ($this->joinFiles) {
-			$watchFiles = $this->checkLastModified ? array_unique(array_merge($files, $this->collection->getWatchFiles())) : array();
+			$watchFiles = $this->checkLastModified ? array_unique(array_merge($files, $this->collection->getWatchFiles())) : [];
 
-			return array(
+			return [
 				$this->generateFiles($files, $ifModified, $watchFiles),
-			);
+			];
 
 		} else {
-			$arr = array();
+			$arr = [];
 
 			foreach ($files as $file) {
-				$watchFiles = $this->checkLastModified ? array_unique(array_merge(array($file), $this->collection->getWatchFiles())) : array();
-				$arr[] = $this->generateFiles(array($file), $ifModified, $watchFiles);
+				$watchFiles = $this->checkLastModified ? array_unique(array_merge([$file], $this->collection->getWatchFiles())) : [];
+				$arr[] = $this->generateFiles([$file], $ifModified, $watchFiles);
 			}
 
 			return $arr;
@@ -214,11 +228,11 @@ class Compiler
 			file_put_contents($outPath, $this->getContent($files));
 		}
 
-		return (object) array(
+		return (object) [
 			'file' => $name,
 			'lastModified' => $lastModified,
 			'sourceFiles' => $files,
-		);
+		];
 	}
 
 	/**

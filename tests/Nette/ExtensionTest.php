@@ -21,7 +21,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
 		$configurator->setTempDirectory($tempDir);
 
 		foreach ($configFiles as $file) {
-			$configurator->addConfig($file, FALSE);
+			$configurator->addConfig($file);
 		}
 
 		$configurator->addParameters(array(
@@ -88,7 +88,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
 		$configurator->onCompile[] = function ($configurator, \Nette\DI\Compiler $compiler) {
 			$compiler->addExtension('Foo', new \WebLoader\Nette\Extension());
 		};
-		$configurator->addConfig(__DIR__ . '/../fixtures/extensionName.neon', false);
+		$configurator->addConfig(__DIR__ . '/../fixtures/extensionName.neon');
 		$container = $configurator->createContainer();
 
 		$this->assertInstanceOf('WebLoader\Compiler', $container->getService('Foo.cssDefaultCompiler'));

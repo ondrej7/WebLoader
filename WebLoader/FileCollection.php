@@ -14,13 +14,13 @@ class FileCollection implements IFileCollection
 	private $root;
 
 	/** @var array */
-	private $files = array();
+	private $files = [];
 
 	/** @var array */
-	private $watchFiles = array();
+	private $watchFiles = [];
 
 	/** @var array */
-	private $remoteFiles = array();
+	private $remoteFiles = [];
 
 	/**
 	 * @param string|null $root files root for relative paths
@@ -61,10 +61,11 @@ class FileCollection implements IFileCollection
 	}
 
 
-	/**
-	 * Add file
-	 * @param $file string filename
-	 */
+    /**
+     * Add file
+     * @param $file string filename
+     * @throws FileNotFoundException
+     */
 	public function addFile($file)
 	{
 		$file = $this->cannonicalizePath((string) $file);
@@ -77,10 +78,11 @@ class FileCollection implements IFileCollection
 	}
 
 
-	/**
-	 * Add files
-	 * @param array|\Traversable $files array list of files
-	 */
+    /**
+     * Add files
+     * @param array|\Traversable $files array list of files
+     * @throws FileNotFoundException
+     */
 	public function addFiles($files)
 	{
 		foreach ($files as $file) {
@@ -95,7 +97,7 @@ class FileCollection implements IFileCollection
 	 */
 	public function removeFile($file)
 	{
-		$this->removeFiles(array($file));
+		$this->removeFiles([$file]);
 	}
 
 
@@ -105,7 +107,7 @@ class FileCollection implements IFileCollection
 	 */
 	public function removeFiles(array $files)
 	{
-		$files = array_map(array($this, 'cannonicalizePath'), $files);
+		$files = array_map([$this, 'cannonicalizePath'], $files);
 		$this->files = array_diff($this->files, $files);
 	}
 
@@ -139,9 +141,9 @@ class FileCollection implements IFileCollection
 	 */
 	public function clear()
 	{
-		$this->files = array();
-		$this->watchFiles = array();
-		$this->remoteFiles = array();
+		$this->files = [];
+		$this->watchFiles = [];
+		$this->remoteFiles = [];
 	}
 
 	/**
@@ -160,10 +162,11 @@ class FileCollection implements IFileCollection
 		return $this->root;
 	}
 
-	/**
-	 * Add watch file
-	 * @param $file string filename
-	 */
+    /**
+     * Add watch file
+     * @param $file string filename
+     * @throws FileNotFoundException
+     */
 	public function addWatchFile($file)
 	{
 		$file = $this->cannonicalizePath((string) $file);
@@ -175,10 +178,11 @@ class FileCollection implements IFileCollection
 		$this->watchFiles[] = $file;
 	}
 
-	/**
-	 * Add watch files
-	 * @param array|\Traversable $files array list of files
-	 */
+    /**
+     * Add watch files
+     * @param array|\Traversable $files array list of files
+     * @throws FileNotFoundException
+     */
 	public function addWatchFiles($files)
 	{
 		foreach ($files as $file) {

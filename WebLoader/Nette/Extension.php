@@ -24,43 +24,39 @@ class Extension extends CompilerExtension
 
 	public function getDefaultConfig()
 	{
-		return array(
-			'jsDefaults' => array(
+		return [
+			'jsDefaults' => [
 				'checkLastModified' => TRUE,
 				'debug' => FALSE,
 				'sourceDir' => '%wwwDir%/js',
 				'tempDir' => '%wwwDir%/' . self::DEFAULT_TEMP_PATH,
 				'tempPath' => self::DEFAULT_TEMP_PATH,
-				'files' => array(),
-				'watchFiles' => array(),
-				'remoteFiles' => array(),
-				'filters' => array(),
-				'fileFilters' => array(),
+				'files' => [],
+				'watchFiles' => [],
+				'remoteFiles' => [],
+				'filters' => [],
+				'fileFilters' => [],
 				'joinFiles' => TRUE,
 				'namingConvention' => '@' . $this->prefix('jsNamingConvention'),
-			),
-			'cssDefaults' => array(
+			],
+			'cssDefaults' => [
 				'checkLastModified' => TRUE,
 				'debug' => FALSE,
 				'sourceDir' => '%wwwDir%/css',
 				'tempDir' => '%wwwDir%/' . self::DEFAULT_TEMP_PATH,
 				'tempPath' => self::DEFAULT_TEMP_PATH,
-				'files' => array(),
-				'watchFiles' => array(),
-				'remoteFiles' => array(),
-				'filters' => array(),
-				'fileFilters' => array(),
+				'files' => [],
+				'watchFiles' => [],
+				'remoteFiles' => [],
+				'filters' => [],
+				'fileFilters' => [],
 				'joinFiles' => TRUE,
 				'namingConvention' => '@' . $this->prefix('cssNamingConvention'),
-			),
-			'js' => array(
-
-			),
-			'css' => array(
-
-			),
+			],
+			'js' => [],
+			'css' => [],
 			'debugger' => '%debugMode%'
-		);
+		];
 	}
 
 	public function loadConfiguration()
@@ -77,14 +73,14 @@ class Extension extends CompilerExtension
 		if ($config['debugger']) {
 			$builder->addDefinition($this->prefix('tracyPanel'))
 				->setClass('WebLoader\Nette\Diagnostics\Panel')
-				->setArguments(array($builder->expand('%appDir%')));
+				->setArguments([$builder->expand('%appDir%')]);
 		}
 
 		$builder->parameters['webloader'] = $config;
 
-		$loaderFactoryTempPaths = array();
+		$loaderFactoryTempPaths = [];
 
-		foreach (array('css', 'js') as $type) {
+		foreach (['css', 'js'] as $type) {
 			foreach ($config[$type] as $name => $wlConfig) {
 				$wlConfig = Helpers::merge($wlConfig, $config[$type . 'Defaults']);
 				$this->addWebLoader($builder, $type . ucfirst($name), $wlConfig);
@@ -97,7 +93,7 @@ class Extension extends CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('factory'))
-			->setClass('WebLoader\Nette\LoaderFactory', array($loaderFactoryTempPaths, $this->name));
+			->setClass('WebLoader\Nette\LoaderFactory', [$loaderFactoryTempPaths, $this->name]);
 	}
 
 	private function addWebLoader(ContainerBuilder $builder, $name, $config)
@@ -106,48 +102,48 @@ class Extension extends CompilerExtension
 
 		$files = $builder->addDefinition($filesServiceName)
 			->setClass('WebLoader\FileCollection')
-			->setArguments(array($config['sourceDir']));
+			->setArguments([$config['sourceDir']]);
 
 		foreach ($this->findFiles($config['files'], $config['sourceDir']) as $file) {
-			$files->addSetup('addFile', array($file));
+			$files->addSetup('addFile', [$file]);
 		}
 
 		foreach ($this->findFiles($config['watchFiles'], $config['sourceDir']) as $file) {
-			$files->addSetup('addWatchFile', array($file));
+			$files->addSetup('addWatchFile', [$file]);
 		}
 
-		$files->addSetup('addRemoteFiles', array($config['remoteFiles']));
+		$files->addSetup('addRemoteFiles', [$config['remoteFiles']]);
 
 		$compiler = $builder->addDefinition($this->prefix($name . 'Compiler'))
 			->setClass('WebLoader\Compiler')
-			->setArguments(array(
+			->setArguments([
 				'@' . $filesServiceName,
 				$config['namingConvention'],
 				$config['tempDir'],
-			));
+			]);
 
-		$compiler->addSetup('setJoinFiles', array($config['joinFiles']));
+		$compiler->addSetup('setJoinFiles', [$config['joinFiles']]);
 
 		if ($builder->parameters['webloader']['debugger']) {
-			$compiler->addSetup('@' . $this->prefix('tracyPanel') . '::addLoader', array(
+			$compiler->addSetup('@' . $this->prefix('tracyPanel') . '::addLoader', [
 				$name,
 				'@' . $this->prefix($name . 'Compiler')
-			));
+			]);
 		}
 
 		foreach ($config['filters'] as $filter) {
-			$compiler->addSetup('addFilter', array($filter));
+			$compiler->addSetup('addFilter', [$filter]);
 		}
 
 		foreach ($config['fileFilters'] as $filter) {
-			$compiler->addSetup('addFileFilter', array($filter));
+			$compiler->addSetup('addFileFilter', [$filter]);
 		}
 
 		if (isset($config['debug']) && $config['debug']) {
 			$compiler->addSetup('enableDebugging');
 		}
 
-		$compiler->addSetup('setCheckLastModified', array($config['checkLastModified']));
+		$compiler->addSetup('setCheckLastModified', [$config['checkLastModified']]);
 
 		// todo css media
 	}
@@ -163,7 +159,7 @@ class Extension extends CompilerExtension
 		}
 
 		$init = $class->methods['initialize'];
-		$init->addBody('if (!class_exists(?, ?)) class_alias(?, ?);', array('WebLoader\\LoaderFactory', FALSE, 'WebLoader\\Nette\\LoaderFactory', 'WebLoader\\LoaderFactory'));
+		$init->addBody('if (!class_exists(?, ?)) class_alias(?, ?);', ['WebLoader\\LoaderFactory', FALSE, 'WebLoader\\Nette\\LoaderFactory', 'WebLoader\\LoaderFactory']);
 	}
 
 	public function install(Configurator $configurator)
@@ -174,14 +170,15 @@ class Extension extends CompilerExtension
 		};
 	}
 
-	/**
-	 * @param array $filesConfig
-	 * @param string $sourceDir
-	 * @return array
-	 */
+    /**
+     * @param array $filesConfig
+     * @param string $sourceDir
+     * @return array
+     * @throws FileNotFoundException
+     */
 	private function findFiles(array $filesConfig, $sourceDir)
 	{
-		$normalizedFiles = array();
+		$normalizedFiles = [];
 
 		foreach ($filesConfig as $file) {
 			// finder support
@@ -198,7 +195,7 @@ class Extension extends CompilerExtension
 					$finder->from(is_dir($file['from']) ? $file['from'] : $sourceDir . DIRECTORY_SEPARATOR . $file['from']);
 				}
 
-				$foundFilesList = array();
+				$foundFilesList = [];
 				foreach ($finder as $foundFile) {
 					/** @var \SplFileInfo $foundFile */
 					$foundFilesList[] = $foundFile->getPathname();

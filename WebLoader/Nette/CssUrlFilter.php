@@ -14,7 +14,13 @@ use WebLoader\Filter\CssUrlsFilter;
 class CssUrlFilter extends CssUrlsFilter
 {
 
-	public function __construct($docRoot, IRequest $httpRequest)
+    /**
+     * CssUrlFilter constructor.
+     * @param $docRoot
+     * @param IRequest $httpRequest
+     * @throws \WebLoader\InvalidArgumentException
+     */
+    public function __construct($docRoot, IRequest $httpRequest)
 	{
 		parent::__construct($docRoot, $httpRequest->getUrl()->getBasePath());
 	}

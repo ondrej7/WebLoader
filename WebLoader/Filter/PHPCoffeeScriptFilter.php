@@ -14,14 +14,15 @@ use CoffeeScript\Compiler;
 class PHPCoffeeScriptFilter
 {
 
-	/**
-	 * Invoke filter
-	 *
-	 * @param string
-	 * @param \WebLoader\Compiler
-	 * @param string
-	 * @return string
-	 */
+    /**
+     * Invoke filter
+     *
+     * @param string
+     * @param \WebLoader\Compiler
+     * @param string
+     * @return string
+     * @throws \WebLoader\WebLoaderException
+     */
 	public function __invoke($code, \WebLoader\Compiler $loader, $file = NULL)
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'coffee') {
@@ -41,7 +42,7 @@ class PHPCoffeeScriptFilter
 	public function compileCoffee($source, $file)
 	{
 		try {
-			return Compiler::compile($source, array('filename' => $file));
+			return Compiler::compile($source, ['filename' => $file]);
 		} catch (\Exception $e) {
 			throw new \WebLoader\WebLoaderException('CoffeeScript Filter Error: ' . $e->getMessage(), 0, $e);
 		}
