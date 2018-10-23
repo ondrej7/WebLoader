@@ -3,7 +3,7 @@
 
 Component for CSS and JS files loading
 
-Author: Tomáš Vinduška
+Author: Tomáš Vinduška.
 Original Author: Jan Marek
 Licence: MIT
 
