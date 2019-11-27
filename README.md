@@ -1,9 +1,10 @@
-﻿WebLoader [![Build Status](https://secure.travis-ci.org/tomasvinduska/WebLoader.png?branch=master)](http://travis-ci.org/tomasvinduska/WebLoader)
-=======================
+WebLoader
+=========
 
 Component for CSS and JS files loading
 
-Author: Tomáš Vinduška
+
+Second Original Author: Tomáš Vinduška
 Original Author: Jan Marek
 Licence: MIT
 
