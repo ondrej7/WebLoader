@@ -17,7 +17,7 @@
     },
     {
       "name": "tomasvinduska"
-    },
+    }
   ],
   "replace": {
     "janmarek/webloader": "*"
