@@ -39,8 +39,6 @@
     "joseki/webloader-filters": "CSSMin & JSMin filters written in PHP.",
     "coffeescript/coffeescript": "CoffeeScript compiler written in PHP."
   },
-  "require-dev": {
-  },
   "scripts": {
     "test": [
       "./vendor/bin/parallel-lint -e php --exclude vendor .",
