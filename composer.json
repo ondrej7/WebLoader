@@ -1,5 +1,5 @@
 {
-  "name": "tomasvinduska/webloader",
+  "name": "ondrej7/webloader",
   "description": "Tool for loading or deploying CSS and JS files into web pages",
   "keywords": [
     "webloader",
@@ -14,7 +14,10 @@
     {
       "name": "Jan Marek",
       "email": "mail@janmarek.net"
-    }
+    },
+    {
+      "name": "tomasvinduska"
+    },
   ],
   "replace": {
     "janmarek/webloader": "*"
